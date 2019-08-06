@@ -1,0 +1,40 @@
+{
+  "name": "reduxplus",
+  "version": "1.0.0",
+  "description": "Decoupled redux, for react functional components.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hacknlove/reduxplus.git"
+  },
+  "keywords": [
+    "redux",
+    "react",
+    "functional",
+    "components",
+    "decoupled"
+  ],
+  "author": "Antonio Fernández Porrúa <antonio@hacknlove.org> (https://pykiss.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hacknlove/reduxplus/issues"
+  },
+  "homepage": "https://github.com/hacknlove/reduxplus#readme",
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-standard": "^4.0.0"
+  },
+  "dependencies": {
+    "isdifferent": "^1.0.0",
+    "react": "^16.8.6",
+    "redux": "^4.0.4"
+  }
+}
