@@ -4,7 +4,7 @@ function getValue (state, key) {
   if (!state) {
     return state
   }
-  if (state[key]) {
+  if (state[key] !== undefined) {
     return state[key]
   }
   const dots = key.match(dotRegExp)
