@@ -1,5 +1,5 @@
 {
-  "name": "reduxplus",
+  "name": "@hacknlove/reduxplus",
   "version": "1.0.0",
   "description": "Decoupled redux, for react functional components.",
   "main": "src/index.js",
@@ -22,6 +22,7 @@
   "bugs": {
     "url": "https://github.com/hacknlove/reduxplus/issues"
   },
+  "access": "public",
   "homepage": "https://github.com/hacknlove/reduxplus#readme",
   "devDependencies": {
     "eslint": "^6.1.0",
