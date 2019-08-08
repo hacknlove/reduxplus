@@ -22,7 +22,9 @@
   "bugs": {
     "url": "https://github.com/hacknlove/reduxplus/issues"
   },
-  "access": "public",
+  "publishConfig": {
+    "access": "public"
+  },
   "homepage": "https://github.com/hacknlove/reduxplus#readme",
   "devDependencies": {
     "eslint": "^6.1.0",
