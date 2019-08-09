@@ -46,6 +46,10 @@ class SubStore {
     })
   }
 
+  subscribeKey (key, callback) {
+    return store.subscribeKey(`${this.key}.${key}`, callback)
+  }
+
   hydrate (newState, replace = false) {
     if (!replace) {
       newState = {
