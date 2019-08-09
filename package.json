@@ -1,6 +1,6 @@
 {
   "name": "@hacknlove/reduxplus",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Decoupled redux, for react functional components.",
   "main": "src/index.js",
   "scripts": {
@@ -35,9 +35,11 @@
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-standard": "^4.0.0"
   },
+  "peerDependencies": {
+    "react": "^16.8.0"
+  },
   "dependencies": {
     "isdifferent": "^1.0.0",
-    "react": "^16.8.6",
     "redux": "^4.0.4"
   }
 }
