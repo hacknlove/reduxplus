@@ -1,6 +1,6 @@
 {
   "name": "@hacknlove/reduxplus",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Decoupled redux, for react functional components.",
   "main": "src/index.js",
   "scripts": {
