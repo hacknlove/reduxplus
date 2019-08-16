@@ -3,8 +3,8 @@ const getValue = require('./getValue')
 const setValue = require('./setValue')
 
 store.subs = {}
-const subReducers = {}
-const subSubscriptions = {}
+
+const scope = {}
 
 store.setReducer((state, action) => {
   if (!action.key) {
@@ -26,14 +26,14 @@ store.setReducer((state, action) => {
     delete newState[action.key]
     return newState
   }
-  if (!subReducers[action.key]) {
+  if (!scope[action.key]) {
     return state
   }
 
   return setValue(
     state,
     action.key,
-    subReducers[action.key].reduce(
+    scope[action.key].subReducers.reduce(
       (state, reducer) => reducer(state, action.action),
       getValue(state, action.key)
     )
@@ -45,8 +45,10 @@ class SubStore {
     this.key = key
 
     store.subs[key] = this
-    subReducers[key] = []
-    subSubscriptions[key] = []
+    scope[key] = {
+      subReducers: [],
+      subSubscriptions: []
+    }
   }
 
   isNotForgotten () {
@@ -63,7 +65,7 @@ class SubStore {
 
   setReducer (reducer) {
     this.isNotForgotten()
-    subReducers[this.key].push(reducer)
+    scope[this.key].subReducers.push(reducer)
   }
 
   dispatch (action) {
@@ -86,14 +88,14 @@ class SubStore {
   subscribe (callback) {
     this.isNotForgotten()
     const unsuscribe = store.subscribeKey(`${this.key}`, callback)
-    subSubscriptions[this.key].push(unsuscribe)
+    scope[this.key].subSubscriptions.push(unsuscribe)
     return unsuscribe
   }
 
   subscribeKey (key, callback) {
     this.isNotForgotten()
     const unsuscribe = store.subscribeKey(`${this.key}.${key}`, callback)
-    subSubscriptions[this.key].push(unsuscribe)
+    scope[this.key].subSubscriptions.push(unsuscribe)
     return unsuscribe
   }
 
@@ -113,6 +115,20 @@ class SubStore {
     return new SubStore(`${key}.${this.key}`)
   }
 
+  useSubStore (key, data) {
+    this.isNotForgotten()
+    return store.useSubStore(`${key}.${this.key}`, data)
+  }
+
+  cleanDebounced (timeout = 1000, data = false) {
+    if (scope[this.key].clean) {
+      clearTimeout(scope[this.key].clean)
+    }
+    scope[this.key].clean = setTimeout(() => {
+      this.clean(data)
+    }, timeout)
+  }
+
   clean (data) {
     this.isNotForgotten()
     if (data) {
@@ -124,16 +140,17 @@ class SubStore {
         }
       })
     }
+    scope[this.key].subSubscriptions.forEach(f => f())
+    delete scope[this.key]
     delete store.subs[this.key]
-    delete subReducers[this.key]
-    subSubscriptions.forEach(f => f())
-    delete subSubscriptions[this.key]
   }
-
 }
 
 function subStore (key) {
   if (store.subs[key]) {
+    if (scope[key].clean) {
+      clearTimeout(scope[key].clean)
+    }
     return store.subs[key]
   }
 
