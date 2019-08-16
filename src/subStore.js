@@ -5,19 +5,35 @@ const setValue = require('./setValue')
 store.subs = {}
 
 store.setReducer((state, action) => {
-  if (action.type !== '__reduxplus_subStore') {
+  if (!action.key) {
     return state
   }
-  if (!subReducers[action.__reduxplus_subStore_key]) {
+  if (!action.action) {
+    return state
+  }
+  if (!action.action.type) {
+    return state
+  }
+  if (action.type !== `__/${action.key}/${action.action.type}`) {
+    return state
+  }
+  if (action.clean) {
+    const newState = {
+      ...state
+    }
+    delete newState[action.key]
+    return newState
+  }
+  if (!subReducers[action.key]) {
     return state
   }
 
   return setValue(
     state,
-    action.__reduxplus_subStore_key,
-    subReducers[action.__reduxplus_subStore_key].reduce(
+    action.key,
+    subReducers[action.key].reduce(
       (state, reducer) => reducer(state, action.action),
-      getValue(state, action.__reduxplus_subStore_key)
+      getValue(state, action.key)
     )
   )
 })
@@ -49,8 +65,8 @@ class SubStore {
       throw new Error('sub forgotten')
     }
     store.dispatch({
-      type: '__reduxplus_subStore',
-      __reduxplus_subStore_key: this.key,
+      type: `__/${this.key}/${action.type}`,
+      key: this.key,
       action
     })
   }
@@ -108,6 +124,17 @@ class SubStore {
     delete subReducers[this.key]
     subSubscriptions.forEach(f => f())
     delete subSubscriptions[this.key]
+  }
+
+  clean () {
+    store.dispatch({
+      type: `__/${this.key}/clean`,
+      clean: true,
+      action: {
+        type: 'clean'
+      }
+    })
+    this.forgot()
   }
 }
 
