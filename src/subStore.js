@@ -3,6 +3,8 @@ const getValue = require('./getValue')
 const setValue = require('./setValue')
 
 store.subs = {}
+const subReducers = {}
+const subSubscriptions = {}
 
 store.setReducer((state, action) => {
   if (!action.key) {
@@ -38,32 +40,34 @@ store.setReducer((state, action) => {
   )
 })
 
-const subReducers = {}
-const subSubscriptions = {}
-
 class SubStore {
   constructor (key) {
     this.key = key
+
+    store.subs[key] = this
+    subReducers[key] = []
+    subSubscriptions[key] = []
+  }
+
+  isNotForgotten () {
+    if (!store.subs[this.key]) {
+      // console.error('sub forgotten')
+      throw new Error('sub forgotten')
+    }
   }
 
   getState () {
-    if (store.subs[this.key]) {
-      throw new Error('sub forgotten')
-    }
+    this.isNotForgotten()
     return getValue(store.getState(), this.key)
   }
 
   setReducer (reducer) {
-    if (store.subs[this.key]) {
-      throw new Error('sub forgotten')
-    }
+    this.isNotForgotten()
     subReducers[this.key].push(reducer)
   }
 
   dispatch (action) {
-    if (store.subs[this.key]) {
-      throw new Error('sub forgotten')
-    }
+    this.isNotForgotten()
     store.dispatch({
       type: `__/${this.key}/${action.type}`,
       key: this.key,
@@ -72,34 +76,29 @@ class SubStore {
   }
 
   useRedux (key) {
-    if (store.subs[this.key]) {
-      throw new Error('sub forgotten')
+    this.isNotForgotten()
+    if (key === undefined) {
+      return store.useRedux(this.key)
     }
     return store.useRedux(`${this.key}.${key}`)
   }
 
   subscribe (callback) {
-    if (store.subs[this.key]) {
-      throw new Error('sub forgotten')
-    }
+    this.isNotForgotten()
     const unsuscribe = store.subscribeKey(`${this.key}`, callback)
     subSubscriptions[this.key].push(unsuscribe)
     return unsuscribe
   }
 
   subscribeKey (key, callback) {
-    if (store.subs[this.key]) {
-      throw new Error('sub forgotten')
-    }
+    this.isNotForgotten()
     const unsuscribe = store.subscribeKey(`${this.key}.${key}`, callback)
     subSubscriptions[this.key].push(unsuscribe)
     return unsuscribe
   }
 
   hydrate (newState, replace = false) {
-    if (store.subs[this.key]) {
-      throw new Error('sub forgotten')
-    }
+    this.isNotForgotten()
     if (!replace) {
       newState = {
         ...this.getState(),
@@ -110,15 +109,20 @@ class SubStore {
   }
 
   subStore (key) {
-    if (store.subs[this.key]) {
-      throw new Error('sub forgotten')
-    }
+    this.isNotForgotten()
     return new SubStore(`${key}.${this.key}`)
   }
 
-  forgot () {
-    if (store.subs[this.key]) {
-      throw new Error('sub forgotten')
+  clean (data) {
+    this.isNotForgotten()
+    if (data) {
+      store.dispatch({
+        type: `__/${this.key}/clean`,
+        clean: true,
+        action: {
+          type: 'clean'
+        }
+      })
     }
     delete store.subs[this.key]
     delete subReducers[this.key]
@@ -126,16 +130,6 @@ class SubStore {
     delete subSubscriptions[this.key]
   }
 
-  clean () {
-    store.dispatch({
-      type: `__/${this.key}/clean`,
-      clean: true,
-      action: {
-        type: 'clean'
-      }
-    })
-    this.forgot()
-  }
 }
 
 function subStore (key) {
@@ -143,11 +137,7 @@ function subStore (key) {
     return store.subs[key]
   }
 
-  store.subs[key] = new SubStore(key)
-  subReducers[key] = []
-  subSubscriptions[key] = []
-
-  return store.subs[key]
+  return new SubStore(key)
 }
 
 module.exports = subStore

@@ -58,18 +58,14 @@ Adds a new reducer to the store
 ### `setMiddleware(middleware)`
 Adds a new middleware to the store
 
-### `useRedux(key)`
-
+### `useRedux(key?)`
 `key` can be dot-composed
 
-```import { store, setReducer, setMiddleware, useRedux, hydrate } from 'reduxplus'
+```javascript
+const data = useRedux() // returns store.getState() and actualizes the component when data changes
 
-conimport { store, setReducer, setMiddleware, useRedux, hydrate } from 'reduxplus'
-y') // valueOne = store.getState().key
-conimport { store, setReducer, setMiddleware, useRedux, hydrate } from 'reduxplus'
-o.bar.buz') // value = store.getState().foo.bar.buz
-```import { store, setReducer, setMiddleware, useRedux, hydrate } from 'reduxplus'
-
+const foobar = useRedux('foo.bar') // returns store.getState().foo.bar, and actualizes the component when that value changes
+```
 
 ### hydrate(state, replace = false)
 
@@ -103,19 +99,27 @@ hydrate({
 
 to decouple more and better.
 
+You will see the actions in redux devTools as `__/key/type`
+
+```javascript
+```
 
 ```javascript
 import { subStore } from 'reduxplus'
 
 const sub = subStore('foo.bar')
 
-sub.setReducer(reducer) // reducer that only affects {foo: {bar: HERE }}
 sub.getState() // returns {foo: { bar: THIS } }
 sub.useRedux('buz') // like useRedux('foo.bar.buz')
+sub.useRedux() // like useRedux('foo.bar')
 sub.subscribe(listener) // Only called when some {foo: {bar: HERE }} changes
 sub.hydrate(state) // set the value of {foo: { bar: THIS } }
 sub.dispatch(action) // action that only is procesed by the reducers of this sub
+sub.dispatch({type: 'someType', ...})
+sub.setReducer(reducer) // reducer that only affects {foo: {bar: HERE }}
 sub.subStore('tra.ree') // returns a subSubStore
+sub.clean() // cleans up the sub's subscriptions and reducers
+sub.clean(true) // cleans up the sub's subscriptions, reducers, and data
 ```
 
 ## Caution

@@ -19,7 +19,7 @@ function setMiddleware (middleware) {
   middlewareAPI.dispatch = compose(...middlewares)(store.dispatch)
 }
 
-function decoupledMiddleware (createStore) {
+var decoupledMiddleware = function decoupledMiddleware (createStore) {
   return function (...args) {
     store = createStore(...args)
     middlewareAPI.getState = store.getState
