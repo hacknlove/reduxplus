@@ -1,5 +1,10 @@
 const dotRegExp = /^(.+?)\.(.*)/
 
+/**
+ * Devuelve el valor detrás de una key compuesta por puntos, para un estado
+ * @param {*} state
+ * @param {*} key
+ */
 function getValue (state, key) {
   if (!state) {
     return state
