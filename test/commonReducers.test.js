@@ -1,19 +1,8 @@
 import test from 'ava'
 import { set, update, push, addToSet } from '../src/commonReducers'
+import { ignoreUnknownActions } from './helpers/reducer.js'
 
-test('set return state, (and it has not changed!) if the action has not type set', t => {
-  const oldState = {
-    wer: 'oeirt'
-  }
-
-  const action = {
-    type: 'other'
-  }
-
-  const newState = set({ ...oldState }, action)
-
-  t.deepEqual(oldState, newState)
-})
+test('set return state, (and it has not changed!) if the action has not type set', t => ignoreUnknownActions(set, t))
 
 test('set returns a new state, with {..., key=value}', t => {
   const oldState = {
@@ -30,19 +19,7 @@ test('set returns a new state, with {..., key=value}', t => {
   t.deepEqual({ ...oldState, foo: 'bar' }, newState)
 })
 
-test('update return state, (and it has not changed!) if the action has not type update', t => {
-  const oldState = {
-    wer: 'oeirt'
-  }
-
-  const action = {
-    type: 'other'
-  }
-
-  const newState = update({ ...oldState }, action)
-
-  t.deepEqual(oldState, newState)
-})
+test('update return state, (and it has not changed!) if the action has not type update', t => ignoreUnknownActions(update, t))
 
 test('update returns a new state, with {..., key=value}', t => {
   const oldState = {
@@ -70,20 +47,7 @@ test('update returns a new state, with {..., key=value}', t => {
   }, newState)
 })
 
-test('push return state, (and it has not changed!) if the action has not type push', t => {
-  const oldState = {
-    wer: 'oeirt',
-    foo: []
-  }
-
-  const action = {
-    type: 'other'
-  }
-
-  const newState = push({ ...oldState }, action)
-
-  t.deepEqual(oldState, newState)
-})
+test('push return state, (and it has not changed!) if the action has not type push', t => ignoreUnknownActions(push, t))
 
 test('push return a new state with the value pushed in the array', t => {
   const oldState = {
@@ -123,20 +87,7 @@ test('push returns a new state with a new array under key, if it was undefined',
   })
 })
 
-test('addToSet return state, (and it has not changed!) if the action has not type addToSet', t => {
-  const oldState = {
-    wer: 'oeirt',
-    foo: []
-  }
-
-  const action = {
-    type: 'other'
-  }
-
-  const newState = addToSet({ ...oldState }, action)
-
-  t.deepEqual(oldState, newState)
-})
+test('addToSet return state, (and it has not changed!) if the action has not type addToSet', t => ignoreUnknownActions(addToSet, t))
 
 test('addToSet return a new state with the value pushed in the array, if it is not included', t => {
   const oldState = {

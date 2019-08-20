@@ -1,14 +1,4 @@
-const reducers = [
-  (state, action) => {
-    if (action.type !== '__reduxplus_hydrate__') {
-      return state
-    }
-    return action.replace || {
-      ...state,
-      ...action.state
-    }
-  }
-]
+const reducers = []
 
 /**
  * Execute secuantially all reducers, and returns the new state
