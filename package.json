@@ -43,5 +43,11 @@
   "dependencies": {
     "isdifferent": "^1.0.0",
     "redux": "^4.0.4"
+  },
+  "ava": {
+    "helpers": [
+      "test/helpers/*",
+      "test/helpers/**/*"
+    ]
   }
 }
