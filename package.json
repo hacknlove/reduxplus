@@ -4,7 +4,7 @@
   "description": "Decoupled redux, for react functional components.",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava --watch --verbose"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,8 @@
   },
   "homepage": "https://github.com/hacknlove/reduxplus#readme",
   "devDependencies": {
+    "@testing-library/react-hooks": "^2.0.1",
+    "ava": "^2.3.0",
     "eslint": "^6.1.0",
     "eslint-config-standard": "^13.0.1",
     "eslint-plugin-import": "^2.18.2",
