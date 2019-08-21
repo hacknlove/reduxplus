@@ -3,6 +3,9 @@ const isDifferent = require('isdifferent')
 const store = require('./store')
 const getValue = require('./getValue')
 
+/**
+ * hook que devuelve el state del store, se usa cómo helper de useRedux
+ */
 function useReduxFull () {
   const [value, set] = useState(store.getState())
   useEffect(() => {
@@ -19,21 +22,23 @@ function useReduxFull () {
   return value
 }
 
+/**
+ * hook para react que devuelve el valor de una key en el store de redux
+ * @param {*} key
+ */
 function useRedux (key) {
   if (key === undefined) {
     return useReduxFull()
   }
   const [value, set] = useState(getValue(store.getState(), key))
   useEffect(() => {
-    const unsuscribe = store.subscribe(() => {
+    return store.subscribe(() => {
       const newValue = getValue(store.getState(), key)
+      console.log('x'.repeat(50), store.getState(), key, newValue)
       if (isDifferent(value, newValue)) {
         set(newValue)
       }
     })
-    return () => {
-      unsuscribe()
-    }
   })
   return value
 }
