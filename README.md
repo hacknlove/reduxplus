@@ -1,4 +1,5 @@
 # reduxplus
+![coverage 85%](https://img.shields.io/badge/coverage-85%25-brightgreen)
 
 Decoupled redux, for react functional components.
 
@@ -96,6 +97,9 @@ hydrate({
 ```
 
 ## subStores
+**DEPRECATED** In nexts versións, subStores would reside in their own library, because it is growing in complexity and features
+**Use with caution** Not tested, not stable. New version might be quite different.
+
 
 to decouple more and better.
 
@@ -122,8 +126,11 @@ sub.clean() // cleans up the sub's subscriptions and reducers
 sub.clean(true) // cleans up the sub's subscriptions, reducers, and data
 ```
 
-## Caution
+## test
 
-Not every feature has been tested and only a subset of them is being used in production.
-
-If you find some bug, please raise a new issue.
+```bash
+git clone https://github.com/hacknlove/reduxplus.git
+cd reduxplus
+npm i
+npm test
+```
