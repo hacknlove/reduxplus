@@ -1,7 +1,7 @@
 const { useState, useEffect } = require('react')
 const isDifferent = require('isdifferent')
 const store = require('./store')
-const getValue = require('./getValue')
+const { getValue } = require('@hacknlove/deepobject')
 
 /**
  * hook que devuelve el state del store, se usa cómo helper de useRedux
@@ -34,7 +34,6 @@ function useRedux (key) {
   useEffect(() => {
     return store.subscribe(() => {
       const newValue = getValue(store.getState(), key)
-      console.log('x'.repeat(50), store.getState(), key, newValue)
       if (isDifferent(value, newValue)) {
         set(newValue)
       }

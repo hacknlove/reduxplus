@@ -1,6 +1,6 @@
 {
   "name": "@hacknlove/reduxplus",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Decoupled redux, for react functional components.",
   "main": "src/index.js",
   "files": [
@@ -46,6 +46,7 @@
     "react": "^16.8.0"
   },
   "dependencies": {
+    "@hacknlove/deepobject": "^1.0.0",
     "isdifferent": "^1.0.0",
     "redux": "^4.0.4"
   },

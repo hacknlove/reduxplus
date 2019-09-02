@@ -1,6 +1,5 @@
 const store = require('./store')
-const getValue = require('./getValue')
-const setValue = require('./setValue')
+const { getValue, setValue } = require('@hacknlove/deepobject')
 
 store.subs = {}
 

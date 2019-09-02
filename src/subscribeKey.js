@@ -1,6 +1,6 @@
 const isDifferent = require('isdifferent')
 const store = require('./store')
-const getValue = require('./getValue')
+const { getValue } = require('@hacknlove/deepobject')
 
 function subscribeKey (key, callback) {
   var value = getValue(store.getState(), key)
