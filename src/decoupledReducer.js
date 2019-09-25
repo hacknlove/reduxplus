@@ -1,7 +1,7 @@
 const reducers = []
 
 /**
- * Execute secuantially all reducers, and returns the new state
+ * Execute sequentially all reducers, and returns the new state
  * @param {*} previousState
  * @param {*} action
  */

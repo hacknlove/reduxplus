@@ -2,7 +2,7 @@ const store = require('./store')
 const { setReducer } = require('./decoupledReducer')
 
 /**
- * Hydrates the store, mergind or replacing a state (dispatch a hydrate action)
+ * Hydrates the store, merging or replacing a state (dispatch a hydrate action)
  * @param {*} state
  * @param {*} replace
  */
